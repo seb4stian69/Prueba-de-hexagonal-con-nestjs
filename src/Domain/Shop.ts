@@ -33,7 +33,7 @@ export class Shop extends AggregateRoot{
     
     private clientID:string;
     private clientName:string;
-    private productsPurchased:Set<string>;
+    private productsPurchased:Map<string, number>;
     private total:number;
     public readonly id:ShopID
 
