@@ -80,7 +80,7 @@ export const convertToEditProductData = (command:EditProductCommand,productID:Pr
     }
 }
 
-export const convertToEditProductDataEvent = (productEditedData:ProductEditedData):Product => {
+export const convertToEditProductDataEvent = (productEditedData:ProductEditedData):any => {
 
     return new Product(
         productEditedData.name,

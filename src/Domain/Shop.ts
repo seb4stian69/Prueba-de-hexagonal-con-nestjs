@@ -75,7 +75,7 @@ export class Shop extends AggregateRoot{
 
     // + ------------------------ Getters & Setters ------------------------ + //
 
-    public getProducts():Product[]{
+    public getProducts():any[]{
         return this.products;
     }
     public setProducts(products:Product[]):void{
