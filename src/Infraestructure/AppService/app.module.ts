@@ -9,6 +9,8 @@ import { EventsHandler } from './EventHandler';
 import { ProductRepository } from './Repository/ProductRepository';
 import { ProductsSchema } from 'src/Domain/Commands/RegisterProductCommand';
 import { ShopSchema } from 'src/Domain/Shop';
+import { InvoiceSchema } from 'src/Domain/Events/ProductsPurchasedEvent';
+import { InvoiceRepository } from './Repository/InvoiceRepository';
 
 @Module({
 
@@ -16,6 +18,7 @@ import { ShopSchema } from 'src/Domain/Shop';
     MongooseModule.forRoot('mongodb+srv://sebastiansantis:0oiH1Z0QJLomg6e7@springbootcluster.koaqqah.mongodb.net/SofkaShop-NestJS?retryWrites=true&w=majority',{useNewUrlParser:true}),
     MongooseModule.forFeature([{ name: 'Products', schema: ProductsSchema}]),
     MongooseModule.forFeature([{ name: 'Shop', schema: ShopSchema}]),
+    MongooseModule.forFeature([{ name: 'Invoices', schema: InvoiceSchema}]),
     CqrsModule
   ],
   
@@ -25,6 +28,7 @@ import { ShopSchema } from 'src/Domain/Shop';
     AppService,
     ShopRepository,
     ProductRepository,
+    InvoiceRepository,
     ...CommandsHandler,
     ...EventsHandler,
   ],

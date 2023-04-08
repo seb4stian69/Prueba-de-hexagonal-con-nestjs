@@ -8,6 +8,7 @@ import { ShopCreatedEvent } from 'src/Domain/Events/ShopCreatedEvent';
 import { ShopRepository } from '../Repository/ShopRepository';
 import { ShopD } from 'src/Domain/Shop';
 import { converRegisteredDataToProductEvent, convertToEditProductDataEvent } from 'src/Application/Utils/ConvertToEntity';
+import { InvoiceRepository } from '../Repository/InvoiceRepository';
 
 const inEvent: string = 'En el evento'
 
@@ -98,9 +99,14 @@ export class ProductDeletedHandler implements IEventHandler<ProductDeletedEvent>
 @EventsHandler(ProductPurchasedEvent)
 export class ProductPurchasedHandler implements IEventHandler<ProductPurchasedEvent> {
 
-  constructor(private readonly shopRepository:ShopRepository){}
+  constructor(
+    private readonly shopRepository:ShopRepository,
+    private readonly invoiceRepository:InvoiceRepository
+  ){}
 
   handle(event: ProductPurchasedEvent) {
+
+    this.invoiceRepository.saveInvoices(event.parseToInvoiceSchame());
 
     event.getProductPurchasedData().products.forEach((qty, id)=>{
       this.shopRepository.buyProducts(id, qty, event.getProductPurchasedData().shopID.id)
