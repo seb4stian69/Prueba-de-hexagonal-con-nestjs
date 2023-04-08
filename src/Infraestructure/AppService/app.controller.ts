@@ -1,6 +1,4 @@
-import { ShopRepository } from './Repository/ShopRepository';
-import { ProductRepository } from './Repository/ProductRepository';
-import { Controller, Post, Body, Put, Delete, Get } from '@nestjs/common';
+import { Controller, Post, Body, Put, Delete } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { BuyProductCommand, BuyProductData } from 'src/Domain/Commands/BuyProductCommand';
 import { CreateShopCommand } from 'src/Domain/Commands/CreateShopCommand';
@@ -14,20 +12,13 @@ export class AppController {
 
   constructor(
     private readonly commandBus: CommandBus,
-    private readonly queryBus: QueryBus,
-    private readonly productRepository:ProductRepository,
-    private readonly shopRepository:ShopRepository
   ) {}
 
   /* +---------------------------| Only for shops |---------------------------+ */
+  
   @Post('/shop')
   createShop(@Body() id:string): Promise<CreateShopCommand> {
     return this.commandBus.execute(new CreateShopCommand(id));
-  }
-
-  @Get('/shop')
-  getAllShops(): Promise<ShopD[]> {
-    return this.shopRepository.getShops();
   }
 
   /* +---------------------------| Only for products |---------------------------+ */
@@ -52,13 +43,6 @@ export class AppController {
   @Post('/shop/buy')
   buyProducts(@Body() data:BuyProductData): Promise<BuyProductCommand> {
     return this.commandBus.execute(new BuyProductCommand(data))
-  }
-
-  /* */
-
-  @Get('/shop/product')
-  async getProducts():Promise<Products[]>{
-    return await this.productRepository.getProducts()
   }
 
 }
