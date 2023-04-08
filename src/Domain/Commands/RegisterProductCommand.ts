@@ -5,6 +5,7 @@ import { Data } from "node-lombok";
 
 @Schema({collection:'Products'})
 export class Products{
+
     @Prop()
     shopID:string;
     @Prop()
@@ -21,6 +22,9 @@ export class Products{
     min:number;
     @Prop()
     price:number;
+
+    public getShopID():string {return this.shopID}
+
 }
 
 export type ProductDocument = HydratedDocument<Products>;
@@ -31,10 +35,16 @@ export class RegisterProductCommand {
 
     [x: string]: any;
 
-    private Products: Products;
+    private product: Products;
 
-    constructor(Products: Products){
-        this.Products = Products;
+    constructor(product: Products){
+        this.product = product;
+    }
+
+    public getProduct(): Products{return this.product}
+
+    public getShopID(): string{
+        return this.product.shopID;
     }
 
 }

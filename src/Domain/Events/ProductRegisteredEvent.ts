@@ -6,7 +6,7 @@ import { Max } from "../Values/Max";
 import { Min } from "../Values/Min";
 import { Price } from "../Values/Price";
 import { ShopID } from "../Shop";
-import { ProductID } from "../Entities/Product";
+import { Product, ProductID } from "../Entities/Product";
 
 export interface ProductRegisteredData{
     productID: ProductID;
@@ -28,6 +28,10 @@ export class ProductRegisteredEvent {
 
     constructor(productRegisteredData: ProductRegisteredData){
         this.productRegisteredData = productRegisteredData;
+    }
+
+    public getProductRegisteredData(): ProductRegisteredData{
+        return this.productRegisteredData;
     }
 
 }

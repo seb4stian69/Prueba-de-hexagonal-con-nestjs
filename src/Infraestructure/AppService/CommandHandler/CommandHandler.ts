@@ -11,6 +11,7 @@ import { EditProductCommand } from 'src/Domain/Commands/EditProductCommand';
 import { EditProductUseCase } from 'src/Application/UseCase/EditProductUseCase';
 import { DeleteProductUseCase } from 'src/Application/UseCase/DeleteProductUseCase';
 import { ProductRepository } from '../Repository/ProductRepository';
+import { Shop } from 'src/Domain/Shop';
 
 const inCommand: string = '[En el comando]'
 
@@ -55,10 +56,10 @@ export class RegisterProductHandler implements ICommandHandler<RegisterProductCo
     console.log('\n+----------------------------------------------------+');
     console.log(`\x1b[32m${inCommand}\x1b[0m` + ' Producto en proceso de registro ...');
 
-    let usecase = new RegisterProductUseCase(command);
-    const shop = usecase.apply();
+    let usecase:RegisterProductUseCase = new RegisterProductUseCase(this.repository);
+    const shop:Shop = await usecase.apply(command);
 
-    console.log({...command});
+    console.log({...shop});
 
     this.publisher.mergeObjectContext(shop);
     shop.commit();

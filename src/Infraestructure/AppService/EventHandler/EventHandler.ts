@@ -7,6 +7,7 @@ import { ProductPurchasedEvent } from 'src/Domain/Events/ProductsPurchasedEvent'
 import { ShopCreatedEvent } from 'src/Domain/Events/ShopCreatedEvent';
 import { ShopRepository } from '../Repository/ShopRepository';
 import { ShopD } from 'src/Domain/Shop';
+import { converRegisteredDataToProductNoCommand } from 'src/Application/Utils/ConvertToEntity';
 
 const inEvent: string = 'En el evento'
 
@@ -36,10 +37,22 @@ export class ShopCreatedHandler implements IEventHandler<ShopCreatedEvent> {
 
 @EventsHandler(ProductRegisteredEvent)
 export class ProductRegisteredHandler implements IEventHandler<ProductRegisteredEvent> {
+
+  constructor(private readonly shopRepository:ShopRepository){}
+
   handle(event: ProductRegisteredEvent) {
+
+    this.shopRepository.addProduct(
+      converRegisteredDataToProductNoCommand(
+        event.getProductRegisteredData()
+      )
+    )
+      
     console.log('\n' + `\x1b[32m[${inEvent}]\x1b[0m`+' Producto registrado ...');
-    console.log({...event.getProductRegisteredData()});
+    console.log({...event.getProductRegisteredData()}); 
+
   }
+  
 }
 
 /* + ------------------------------ | Product edited | ------------------------------ + */

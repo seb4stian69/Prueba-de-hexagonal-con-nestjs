@@ -28,7 +28,7 @@ export class Product extends Entity<DataProduct>{
 
     constructor(name:PName, inInventory:inInventory, isEnabled:Enable, max:Max, min:Min, price:Price, superid:string) {
         
-        const megaid:DataProduct = {
+        const dataProduct:DataProduct = {
             id:superid.split('-')[1],
             tenantId:superid.split('-')[0],
             name:name,
@@ -39,7 +39,7 @@ export class Product extends Entity<DataProduct>{
             price:price
         }
 
-        super(megaid);
+        super(dataProduct);
         
     }
 
