@@ -23,4 +23,8 @@ export class ProductPurchasedEvent{
         this.productPurchasedData = productPurchasedData;
     }
 
+    public getProductPurchasedData(): ProductPurchasedData{
+        return this.productPurchasedData;
+    }
+
 }

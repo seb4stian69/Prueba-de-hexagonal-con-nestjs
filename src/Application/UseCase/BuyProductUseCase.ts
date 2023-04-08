@@ -1,28 +1,20 @@
 import { BuyProductCommand } from "src/Domain/Commands/BuyProductCommand";
 import { ProductPurchasedData } from "src/Domain/Events/ProductsPurchasedEvent";
-import { Shop, ShopID } from "src/Domain/Shop";
-import Instant from "ts-time/Instant";
+import { Shop, ShopD, ShopID } from "src/Domain/Shop";
+import { ShopService } from "../Gateway/ShopService";
+import { converShopDToShop, getProductPurchasedData } from "../Utils/ConvertToEntity";
 
 export class BuyProductUseCase{
 
-    constructor(private readonly command: BuyProductCommand){}
+    constructor(private readonly shopService:ShopService){}
 
-    public apply():Shop{
+    async apply(command: BuyProductCommand):Promise<Shop>{
 
-        const shopID: ShopID = {
-            id: this.command.getBuyProductData().shopID
-        }
+        const shopID:ShopID = {id: command.getBuyProductData().shopID}
+        const shopD:ShopD = await this.shopService.getShopById(shopID.id);
+        const shop:Shop = await converShopDToShop(shopD);
 
-        const shop = Shop.from(null);
-
-        const productPurchasedData: ProductPurchasedData = {
-            date: Instant.now(),
-            idType:this.command.getBuyProductData().idType,
-            idClient:this.command.getBuyProductData().idClient,
-            clientName:this.command.getBuyProductData().clientName ,
-            products:this.command.getBuyProductData().products,
-            shopID: shopID
-        };
+        const productPurchasedData: ProductPurchasedData = getProductPurchasedData(command,shopID);
 
         shop.buyProduct(productPurchasedData);
         

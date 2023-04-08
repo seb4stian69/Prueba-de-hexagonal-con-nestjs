@@ -1,8 +1,10 @@
+import { BuyProductCommand } from "src/Domain/Commands/BuyProductCommand";
 import { EditProductCommand } from "src/Domain/Commands/EditProductCommand";
 import { Products, RegisterProductCommand } from "src/Domain/Commands/RegisterProductCommand";
 import { Product, ProductID } from "src/Domain/Entities/Product";
 import { ProductEditedData } from "src/Domain/Events/ProductEditedEvent";
 import { ProductRegisteredData } from "src/Domain/Events/ProductRegisteredEvent";
+import { ProductPurchasedData } from "src/Domain/Events/ProductsPurchasedEvent";
 import { Shop } from "src/Domain/Shop";
 import { ShopD, ShopID } from "src/Domain/Shop";
 import { Enable } from "src/Domain/Values/Enable";
@@ -11,6 +13,7 @@ import { Max } from "src/Domain/Values/Max";
 import { Min } from "src/Domain/Values/Min";
 import { PName } from "src/Domain/Values/PName";
 import { Price } from "src/Domain/Values/Price";
+import Instant from "ts-time/Instant";
 
 export const convertItemToProduct=(item:Products, shopID:any):Product=>{
 
@@ -92,4 +95,22 @@ export const convertToEditProductDataEvent = (productEditedData:ProductEditedDat
         productEditedData.productID.tenantId+'-'+productEditedData.productID.id
     );
 
+}
+
+export const getProductPurchasedData = (command:BuyProductCommand, shopID:ShopID):ProductPurchasedData=>{
+
+    let map: Map<string, any> = new Map<string, number>();
+
+    for (const [clave, valor] of Object.entries(command.getBuyProductData().products)) {
+        map.set(clave, valor);
+    }
+
+    return {
+        date: Instant.now(),
+        idType:command.getBuyProductData().idType,
+        idClient:command.getBuyProductData().idClient,
+        clientName:command.getBuyProductData().clientName ,
+        products:map,
+        shopID: shopID
+    }
 }

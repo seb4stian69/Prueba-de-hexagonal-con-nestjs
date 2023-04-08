@@ -131,13 +131,14 @@ export class BuyProductHandler implements ICommandHandler<BuyProductCommand> {
   async execute(command: BuyProductCommand) {
 
     console.log('\n+----------------------------------------------------+');
-    console.log('Creando peticion de compra ...');
+    console.log(`\x1b[32m${inCommand}\x1b[0m` + ' Creando peticion de compra ...');
 
-    let usecase = new BuyProductUseCase(command);
-    let shop = usecase.apply();
+    let usecase = new BuyProductUseCase(this.repository);
+    const shop = await usecase.apply(command);
+
     this.publisher.mergeObjectContext(shop);
     shop.commit();
 
   }
 
-}
+} 

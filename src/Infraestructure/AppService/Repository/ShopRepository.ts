@@ -61,4 +61,14 @@ export class ShopRepository implements ShopService{
 
     }
 
+    async buyProducts(id:string, qty:number, shopID:string){
+
+        await this.productsModel.updateOne(
+            {shopID:shopID, "products._id":id},
+            { $inc: { 'products.$._data.inInventory._data.value': -qty } },
+            {new:true}
+        ).exec();
+
+    }
+
 }

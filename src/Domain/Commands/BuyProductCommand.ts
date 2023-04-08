@@ -1,7 +1,7 @@
 import Instant from "ts-time/Instant";
 import { Data } from "node-lombok";
 
-export interface BuyProductData{
+export class BuyProductData{
     shopID:string;
     date:Instant;
     idType:string;

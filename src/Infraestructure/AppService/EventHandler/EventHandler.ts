@@ -97,8 +97,16 @@ export class ProductDeletedHandler implements IEventHandler<ProductDeletedEvent>
 
 @EventsHandler(ProductPurchasedEvent)
 export class ProductPurchasedHandler implements IEventHandler<ProductPurchasedEvent> {
+
+  constructor(private readonly shopRepository:ShopRepository){}
+
   handle(event: ProductPurchasedEvent) {
-    console.log('Productos comprados ...');
-    console.log({...event.getProductPurchasedData()})
+
+    event.getProductPurchasedData().products.forEach((qty, id)=>{
+      this.shopRepository.buyProducts(id, qty, event.getProductPurchasedData().shopID.id)
+    })
+
+    console.log('\n' + `\x1b[32m[${inEvent}]\x1b[0m`+' Productos comprados ...');
+    
   }
 }
