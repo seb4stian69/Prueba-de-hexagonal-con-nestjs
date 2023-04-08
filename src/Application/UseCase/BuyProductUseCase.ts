@@ -16,6 +16,18 @@ export class BuyProductUseCase{
 
         const productPurchasedData: ProductPurchasedData = getProductPurchasedData(command,shopID);
 
+        let map: Map<string, any> = new Map<string, number>();
+
+        for (const [clave, valor] of Object.entries(command.getBuyProductData().products)) {
+            map.set(clave, valor);
+        }
+
+        map.forEach((qty,id) =>{
+            shop.getProducts().forEach(product=>{
+                if(product._id  === id) product._data.inInventory._data.value -= qty 
+            })
+        })
+
         shop.buyProduct(productPurchasedData);
         
         return shop;
