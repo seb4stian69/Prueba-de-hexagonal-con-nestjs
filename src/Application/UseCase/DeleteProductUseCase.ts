@@ -22,6 +22,13 @@ export class DeleteProductUseCase{
         const shopD:ShopD = await this.shopService.getShopById(command.getShopID());
         const shop:Shop = await converShopDToShop(shopD);
 
+        shop.setProducts(
+            shop.getProducts()
+                .filter(
+                    product => product._id !== productID.id
+                )
+        )
+
         shop.deleteProduct(shopID, productID);
 
         return shop;
