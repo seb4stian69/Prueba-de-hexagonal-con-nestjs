@@ -1,5 +1,7 @@
+import { EditProductCommand } from "src/Domain/Commands/EditProductCommand";
 import { Products, RegisterProductCommand } from "src/Domain/Commands/RegisterProductCommand";
 import { Product, ProductID } from "src/Domain/Entities/Product";
+import { ProductEditedData } from "src/Domain/Events/ProductEditedEvent";
 import { ProductRegisteredData } from "src/Domain/Events/ProductRegisteredEvent";
 import { Shop } from "src/Domain/Shop";
 import { ShopD, ShopID } from "src/Domain/Shop";
@@ -48,7 +50,7 @@ export const converRegisteredDataToProduct =(productRegisteredData:ProductRegist
         command.getProduct().productID
     );
 }
-export const converRegisteredDataToProductNoCommand =(productRegisteredData:ProductRegisteredData):Product=>{
+export const converRegisteredDataToProductEvent =(productRegisteredData:ProductRegisteredData):Product=>{
 
     return new Product(
         productRegisteredData.name,
@@ -63,4 +65,31 @@ export const converRegisteredDataToProductNoCommand =(productRegisteredData:Prod
 
 export const converShopDToShop =(shopD:ShopD):Promise<Shop>=>{
     return Shop.fromTwo(null,shopD.products);
+}
+
+export const convertToEditProductData = (command:EditProductCommand,productID:ProductID,shopID:ShopID):ProductEditedData => {
+    return {
+        productID:productID,
+        name: PName.of(command.getEditProductData().name),
+        inInventory: inInventory.of(command.getEditProductData().inInventory),
+        isEnabled: Enable.of(command.getEditProductData().isEnabled),
+        max: Max.of(command.getEditProductData().max),
+        min: Min.of(command.getEditProductData().min),
+        price: Price.of(command.getEditProductData().price),
+        shopID: shopID
+    }
+}
+
+export const convertToEditProductDataEvent = (productEditedData:ProductEditedData):Product => {
+
+    return new Product(
+        productEditedData.name,
+        productEditedData.inInventory,
+        productEditedData.isEnabled,
+        productEditedData.max,
+        productEditedData.min,
+        productEditedData.price,
+        productEditedData.productID.tenantId+'-'+productEditedData.productID.id
+    );
+
 }

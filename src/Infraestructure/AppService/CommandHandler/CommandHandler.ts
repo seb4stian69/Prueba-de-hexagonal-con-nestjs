@@ -59,7 +59,7 @@ export class RegisterProductHandler implements ICommandHandler<RegisterProductCo
     let usecase:RegisterProductUseCase = new RegisterProductUseCase(this.repository);
     const shop:Shop = await usecase.apply(command);
 
-    console.log({...shop});
+    console.log(`Desde el comando sabemos que hay ${shop.getProducts().length} productos`);
 
     this.publisher.mergeObjectContext(shop);
     shop.commit();
@@ -80,10 +80,14 @@ export class EditProductHandler implements ICommandHandler<EditProductCommand> {
   async execute(command: EditProductCommand) {
 
     console.log('\n+----------------------------------------------------+');
-    console.log('Editando producto ...');
+    console.log(`\x1b[32m${inCommand}\x1b[0m` + ' Producto en proceso de edicion ...');
 
-    let usecase = new EditProductUseCase(command);
-    let shop = usecase.apply();
+    let usecase = new EditProductUseCase(this.repository);
+    let shop = await usecase.apply(command);
+
+    console.log(`Desde el comando sabemos que hay ${shop.getProducts().length} productos`);
+    console.log({...command});
+
     this.publisher.mergeObjectContext(shop);
     shop.commit();
 

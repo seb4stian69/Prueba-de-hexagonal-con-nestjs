@@ -7,7 +7,7 @@ import { Min } from '../Values/Min';
 import { Price } from '../Values/Price';
 import { Data } from "node-lombok";
 
-interface DataProduct{
+export interface DataProduct{
     id:string;
     tenantId:string;
     name:PName;

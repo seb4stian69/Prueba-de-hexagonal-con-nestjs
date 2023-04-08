@@ -12,7 +12,7 @@ export interface ProductEditedData{
     productID: ProductID;
     name: PName;
     inInventory: inInventory;
-    enabled: Enable;
+    isEnabled: Enable;
     max: Max;
     min: Min;
     price: Price;
@@ -28,6 +28,10 @@ export class ProductEditedEvent {
 
     constructor(productEditedData: ProductEditedData){
         this.productEditedData = productEditedData;
+    }
+
+    getEditProductData(): ProductEditedData{
+        return this.productEditedData
     }
 
 }

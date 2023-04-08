@@ -5,7 +5,7 @@ export interface EditProductData{
     productID:string;
     name:string;
     inInventory:number;
-    enabled:boolean;
+    isEnabled:boolean;
     max:number;
     min:number;
     price:number;
@@ -20,6 +20,10 @@ export class EditProductCommand {
 
     constructor(editProductData: EditProductData){
         this.editProductData = editProductData;
+    }
+
+    public getShopID():string{
+        return this.editProductData.shopID;
     }
 
 }
