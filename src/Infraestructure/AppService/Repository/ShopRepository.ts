@@ -36,8 +36,6 @@ export class ShopRepository implements ShopService{
 
     async editProduct(product: any): Promise<void>{
 
-        console.log({shopID:product.tenantId, "products._id":product.id})
-
         await this.productsModel.updateOne(
             {shopID:product.tenantId, "products._id":product.id},
             {$set:{"products.$._data":{
@@ -50,6 +48,17 @@ export class ShopRepository implements ShopService{
             }}},
             {new:true}
         ).exec();
+
+    }
+
+    async deleteProduct(shopID:string, id:string){
+
+        await this.productsModel.updateOne(
+            {shopID:shopID, "products._id":id},
+            { $pull: { products: { _id: id } } },
+            {new:true}
+        ).exec();
+
     }
 
 }

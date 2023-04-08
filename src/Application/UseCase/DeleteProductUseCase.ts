@@ -1,23 +1,26 @@
 import { DeleteProductCommand } from "src/Domain/Commands/DeleteProductCommand";
 import { ProductID } from "src/Domain/Entities/Product";
-import { Shop, ShopID } from "src/Domain/Shop";
+import { Shop, ShopD, ShopID } from "src/Domain/Shop";
+import { ShopService } from "../Gateway/ShopService";
+import { converShopDToShop } from "../Utils/ConvertToEntity";
 
 export class DeleteProductUseCase{
 
-    constructor(private readonly command: DeleteProductCommand){}
+    constructor(private readonly shopService:ShopService){}
 
-    public apply():Shop{
+    async apply(command: DeleteProductCommand):Promise<Shop>{
 
         const shopID: ShopID = {
-            id: this.command.getShopID()
+            id: command.getShopID()
         }
 
         const productID: ProductID = {
-            id: this.command.getProductID().split('-')[0],
-            tenantId: this.command.getProductID().split('-')[1]
+            id: command.getProductID().split('-')[1],
+            tenantId: command.getProductID().split('-')[0]
         }
 
-        const shop = Shop.from(null);
+        const shopD:ShopD = await this.shopService.getShopById(command.getShopID());
+        const shop:Shop = await converShopDToShop(shopD);
 
         shop.deleteProduct(shopID, productID);
 

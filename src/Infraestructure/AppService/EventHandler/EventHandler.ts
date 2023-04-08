@@ -80,9 +80,16 @@ export class ProductEditedHandler implements IEventHandler<ProductEditedEvent> {
 
 @EventsHandler(ProductDeletedEvent)
 export class ProductDeletedHandler implements IEventHandler<ProductDeletedEvent> {
+  
+  constructor(private readonly shopRepository:ShopRepository){}
+
   handle(event: ProductDeletedEvent) {
-    console.log('Producto eliminado ...');
+
+    this.shopRepository.deleteProduct(event.getShopID().id, event.getProductID().id)
+
+    console.log('\n' + `\x1b[32m[${inEvent}]\x1b[0m`+' Producto eliminado ...');
     console.log({shopID: event.getShopID(), productID: event.getProductID()});
+
   }
 }
 

@@ -107,10 +107,10 @@ export class DeleteProductHandler implements ICommandHandler<DeleteProductComman
   async execute(command: DeleteProductCommand) {
 
     console.log('\n+----------------------------------------------------+');
-    console.log('Eliminando producto ...');
+    console.log(`\x1b[32m${inCommand}\x1b[0m` + ' Producto en proceso de eliminacion ...');
 
-    let usecase = new DeleteProductUseCase(command);
-    let shop = usecase.apply();
+    let usecase = new DeleteProductUseCase(this.repository);
+    const shop = await usecase.apply(command);
     this.publisher.mergeObjectContext(shop);
     shop.commit();
 
