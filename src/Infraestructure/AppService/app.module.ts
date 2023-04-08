@@ -11,6 +11,8 @@ import { ProductsSchema } from 'src/Domain/Commands/RegisterProductCommand';
 import { ShopSchema } from 'src/Domain/Shop';
 import { InvoiceSchema } from 'src/Domain/Events/ProductsPurchasedEvent';
 import { InvoiceRepository } from './Repository/InvoiceRepository';
+import { QuerysHandler } from './QueryHandler';
+import { UserRepository, UserSchema } from './Repository/UserRepository';
 
 @Module({
 
@@ -19,6 +21,7 @@ import { InvoiceRepository } from './Repository/InvoiceRepository';
     MongooseModule.forFeature([{ name: 'Products', schema: ProductsSchema}]),
     MongooseModule.forFeature([{ name: 'Shop', schema: ShopSchema}]),
     MongooseModule.forFeature([{ name: 'Invoices', schema: InvoiceSchema}]),
+    MongooseModule.forFeature([{ name: 'Users', schema: UserSchema}]),
     CqrsModule
   ],
   
@@ -29,6 +32,8 @@ import { InvoiceRepository } from './Repository/InvoiceRepository';
     ShopRepository,
     ProductRepository,
     InvoiceRepository,
+    UserRepository,
+    ...QuerysHandler,
     ...CommandsHandler,
     ...EventsHandler,
   ],

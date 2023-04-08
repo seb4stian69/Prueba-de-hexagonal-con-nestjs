@@ -11,23 +11,36 @@ export class ShopRepository implements ShopService{
 
     constructor(
         @InjectModel('Shop')
-        private readonly productsModel: Model<ShopDocument>
+        private readonly shopModel: Model<ShopDocument>
     ){/* Void */}
 
     async addShop(shop:ShopD):Promise<void> {
-        await this.productsModel.create(shop);
+        await this.shopModel.create(shop);
     }
 
     async getShops():Promise<ShopD[]> {
-        return await this.productsModel.find().exec();
+        return await this.shopModel.find().exec();
     }
 
     async getShopById(id: string): Promise<ShopD>{
-        return await this.productsModel.findOne({shopID:id}).exec();
+        return await this.shopModel.findOne({shopID:id}).exec();
+    }
+
+    async getShopProducts(id: string): Promise<Product[]>{
+        return (await this.shopModel.findOne({shopID:id}).exec()).products;
+    }
+
+    async getShopProductsByProductid(shopid: string,productid: string): Promise<Product>{
+        return await this.shopModel.findOne({ 'products._id': productid }, { 'products.$': 1 });
+    }
+
+    async getShopProductsWitPagination(shopid:string, page:number, limit:number): Promise<Product[]>{
+        const collection = await this.shopModel.findOne({shopID:shopid}, { products: { $slice: [(page - 1) * limit, limit] } });
+        return collection.products;
     }
 
     async addProduct(product: Product): Promise<void>{
-        await this.productsModel.updateOne(
+        await this.shopModel.updateOne(
             {shopID:product.tenantId},
             {$push:{products:{...product}}},
             {new:true}
@@ -36,7 +49,7 @@ export class ShopRepository implements ShopService{
 
     async editProduct(product: any): Promise<void>{
 
-        await this.productsModel.updateOne(
+        await this.shopModel.updateOne(
             {shopID:product.tenantId, "products._id":product.id},
             {$set:{"products.$._data":{
                 name:product._data.name,
@@ -53,7 +66,7 @@ export class ShopRepository implements ShopService{
 
     async deleteProduct(shopID:string, id:string){
 
-        await this.productsModel.updateOne(
+        await this.shopModel.updateOne(
             {shopID:shopID, "products._id":id},
             { $pull: { products: { _id: id } } },
             {new:true}
@@ -63,7 +76,7 @@ export class ShopRepository implements ShopService{
 
     async buyProducts(id:string, qty:number, shopID:string){
 
-        await this.productsModel.updateOne(
+        await this.shopModel.updateOne(
             {shopID:shopID, "products._id":id},
             { $inc: { 'products.$._data.inInventory._data.value': -qty } },
             {new:true}
