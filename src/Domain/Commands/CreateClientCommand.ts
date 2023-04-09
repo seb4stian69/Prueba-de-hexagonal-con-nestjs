@@ -21,4 +21,23 @@ export class CreateClientCommand{
         this.password = password;
     }
 
+    public get Id(){
+        return this.id
+    }
+    public get TenantId(){
+        return this.tenantId
+    }
+    public get CName(){
+        return this.cName
+    }
+    public get Email(){
+        return this.email
+    }
+    public get Username(){
+        return this.username
+    }
+    public get Password(){
+        return this.password
+    }
+    
 }
