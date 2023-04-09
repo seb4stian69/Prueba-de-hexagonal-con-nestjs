@@ -1,5 +1,15 @@
 import { Data } from "node-lombok";
 
+export interface CreateClientCommandData {
+    id:string;
+    tenantId:string;
+    cName: string;
+    email: string;
+    username: string;
+    password: string;
+    shopID: string;
+}
+
 @Data()
 export class CreateClientCommand{
 
@@ -11,14 +21,16 @@ export class CreateClientCommand{
     private email: string;
     private username: string;
     private password: string;
+    private shopID: string;
 
-    constructor(id:string, tenantId:string, cName: string, email: string, username: string, password: string){
+    constructor(id:string, tenantId:string, cName: string, email: string, username: string, password: string, shopID: string) {
         this.id = id;
         this.tenantId = tenantId;
         this.cName = cName;
         this.email = email;
         this.username = username;
         this.password = password;
+        this.shopID = shopID;
     }
 
     public get Id(){
@@ -38,6 +50,10 @@ export class CreateClientCommand{
     }
     public get Password(){
         return this.password
+    }
+
+    public get ShopID() {
+        return this.shopID
     }
     
 }
