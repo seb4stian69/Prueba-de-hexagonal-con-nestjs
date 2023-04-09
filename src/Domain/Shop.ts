@@ -7,6 +7,7 @@ import { ProductDeletedEvent } from "./Events/ProductDeletedEvent";
 import { ProductPurchasedData, ProductPurchasedEvent } from "./Events/ProductsPurchasedEvent";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument } from "mongoose";
+import { ClientCreatedData, ClientCreatedEvent } from "./Events/ClientCreatedEvent";
 
 export interface ShopID{
     id: string;
@@ -71,6 +72,10 @@ export class Shop extends AggregateRoot{
 
     public buyProduct(buyProductData: ProductPurchasedData):void{
         this.apply(new ProductPurchasedEvent(buyProductData));
+    }
+
+    public createClient(clientCreatedData:ClientCreatedData){
+        this.apply(new ClientCreatedEvent(clientCreatedData))
     }
 
     // + ------------------------ Getters & Setters ------------------------ + //
