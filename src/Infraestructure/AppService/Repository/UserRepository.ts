@@ -3,11 +3,10 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument } from "mongoose";
-import { v4 as autoUid } from 'uuid';
 
 @Schema({collection:'Users'})
 export class UserD{
-    @Prop({unique:true, default: autoUid()})
+    @Prop({unique:true})
     readonly userid:string
     @Prop()
     readonly firstName:string;
@@ -19,6 +18,8 @@ export class UserD{
     readonly username:string;
     @Prop()
     readonly password:string;
+    @Prop()
+    readonly shopID:string;
 }
 
 export type UserDocument = HydratedDocument<UserD>;
