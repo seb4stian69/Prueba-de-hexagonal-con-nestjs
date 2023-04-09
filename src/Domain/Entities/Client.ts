@@ -2,31 +2,36 @@ import { Entity } from 'ddd-ts';
 import { CName } from '../Values/CName';
 import { UserName } from '../Values/UserName';
 import { Data } from "node-lombok";
+import { Email } from '../Values/Email';
+import { Password } from '../Values/Password';
 
-export interface ClientID {
+export interface ClientProps {
     id:string;
     tenantId:string;
+    cName: CName;
+    email: Email;
+    username: UserName;
+    password: Password;
 }
 
 @Data()
-export class Client extends Entity<ClientID>{
+export class Client extends Entity<ClientProps>{
 
     [x: string]: any;
 
-    private cName: CName;
-    private username: UserName;
-
-    constructor(cName: CName, username: UserName, superid:string) {
+    constructor(superid:string, cName: CName,  email: Email, username: UserName, password: Password) {
         
-        const megaid: ClientID = {
-            id: superid.split('-')[0],
-            tenantId: superid.split('-')[1]
+        const client: ClientProps = {
+            id: superid.split('-')[1],
+            tenantId: superid.split('-')[0],
+            cName: cName,
+            email: email,
+            username: username,
+            password: password
+
         }
 
-        super(megaid);
-
-        this.cName = cName;
-        this.username = username;
+        super(client);
 
     }
 
