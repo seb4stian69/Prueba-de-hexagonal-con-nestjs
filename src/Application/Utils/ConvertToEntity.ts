@@ -1,18 +1,24 @@
 import { BuyProductCommand } from "src/Domain/Commands/BuyProductCommand";
+import { CreateClientCommand } from "src/Domain/Commands/CreateClientCommand";
 import { EditProductCommand } from "src/Domain/Commands/EditProductCommand";
 import { Products, RegisterProductCommand } from "src/Domain/Commands/RegisterProductCommand";
 import { Product, ProductID } from "src/Domain/Entities/Product";
+import { ClientCreatedData } from "src/Domain/Events/ClientCreatedEvent";
 import { ProductEditedData } from "src/Domain/Events/ProductEditedEvent";
 import { ProductRegisteredData } from "src/Domain/Events/ProductRegisteredEvent";
 import { ProductPurchasedData } from "src/Domain/Events/ProductsPurchasedEvent";
 import { Shop } from "src/Domain/Shop";
 import { ShopD, ShopID } from "src/Domain/Shop";
+import { CName } from "src/Domain/Values/CName";
+import { Email } from "src/Domain/Values/Email";
 import { Enable } from "src/Domain/Values/Enable";
 import { inInventory } from "src/Domain/Values/inInventory";
 import { Max } from "src/Domain/Values/Max";
 import { Min } from "src/Domain/Values/Min";
+import { Password } from "src/Domain/Values/Password";
 import { PName } from "src/Domain/Values/PName";
 import { Price } from "src/Domain/Values/Price";
+import { UserName } from "src/Domain/Values/UserName";
 import Instant from "ts-time/Instant";
 
 export const convertItemToProduct=(item:Products, shopID:any):Product=>{
@@ -112,5 +118,17 @@ export const getProductPurchasedData = (command:BuyProductCommand, shopID:ShopID
         clientName:command.getBuyProductData().clientName ,
         products:map,
         shopID: shopID
+    }
+
+}
+
+export const getClientCreatedData = (command: CreateClientCommand):ClientCreatedData=>{
+    return {
+        id: command.Id,
+        tenantId: command.TenantId,
+        cName: CName.of(command.CName.split(' ')[0], command.CName.split(' ')[1]),
+        email: Email.of(command.Email),
+        username: UserName.of(command.Username),
+        password: Password.of(command.Password),
     }
 }
