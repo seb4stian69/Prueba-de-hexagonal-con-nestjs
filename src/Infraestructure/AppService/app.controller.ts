@@ -15,6 +15,7 @@ import { GetShopsByIDQuery } from './QueryHandler/Querys/Shops/GetShopsByIDQuery
 import { GetAllBuysByUserIDQuery } from './QueryHandler/Querys/Buys/GetAllBuysByUserIDQuery';
 import { GetAllBuysQuery } from './QueryHandler/Querys/Buys/GetAllBuysQuery';
 import { GetUserQuery } from './QueryHandler/Querys/Users/GetUserQuery';
+import { CreateClientCommand, CreateClientCommandData } from 'src/Domain/Commands/CreateClientCommand';
 
 @Controller()
 export class AppController {
@@ -28,6 +29,11 @@ export class AppController {
   @Get('/user')
   getUser(@Body() data:{id:string}): Promise<any> {
     return this.querybus.execute(new GetUserQuery(data.id));
+  }
+
+  @Post('/user')
+  createUser(@Body() data:CreateClientCommandData): Promise<any> {
+    return this.commandBus.execute(new CreateClientCommand(data.id, data.tenantId, data.cName, data.email, data.username, data.password, data.shopID));
   }
 
   /* +---------------------------| Only for shops |---------------------------+ */
