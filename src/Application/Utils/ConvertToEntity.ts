@@ -123,12 +123,13 @@ export const getProductPurchasedData = (command:BuyProductCommand, shopID:ShopID
 }
 
 export const getClientCreatedData = (command: CreateClientCommand):ClientCreatedData=>{
-    return {
+        return {
         id: command.Id,
         tenantId: command.TenantId,
         cName: CName.of(command.CName.split(' ')[0], command.CName.split(' ')[1]),
         email: Email.of(command.Email),
         username: UserName.of(command.Username),
         password: Password.of(command.Password),
+        shopID: command.ShopID
     }
 }
