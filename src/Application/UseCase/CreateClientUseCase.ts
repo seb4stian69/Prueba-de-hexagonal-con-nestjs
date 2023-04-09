@@ -2,7 +2,7 @@ import { Shop } from "../../Domain/Shop";
 import { CreateClientCommand } from "src/Domain/Commands/CreateClientCommand";
 import { getClientCreatedData } from "../Utils/ConvertToEntity";
 
-export class CreateShopUseCase{
+export class CreateClientUseCase{
 
   constructor(){/* Void */}
 
