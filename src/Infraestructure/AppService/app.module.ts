@@ -2,10 +2,8 @@ import { Module } from "@nestjs/common";
 import { CqrsModule } from "@nestjs/cqrs";
 import { MongooseModule } from "@nestjs/mongoose";
 import { InvoiceModule } from "./invoice/invoice.module";
-import { UserSchema } from "./Common/Repository/UserRepository";
 import { ShopAndProductsModule } from "./shop-and-products/shop-and-products.module";
 import { UsersModule } from "./users/users.module";
-
 
 @Module({
 

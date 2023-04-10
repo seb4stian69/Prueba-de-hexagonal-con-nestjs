@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Put, Delete, Get } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateClientCommand, CreateClientCommandData } from 'src/Domain/Commands/CreateClientCommand';
 import { GetUserQuery } from './QueryHandler/Query/GetUserQuery';

@@ -3,7 +3,6 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { InvoiceRepository } from '../Common/Repository/InvoiceRepository';
 import { CommandHandlers } from './CommandHandler';
 import { EventHandlers } from './EventHandler';
-import { InvoiceController } from '../invoice/invoice.controller';
 import { QueryHandlers } from './QueryHandler';
 import { ShopRepository } from '../Common/Repository/ShopRepository';
 import { MongooseModule } from '@nestjs/mongoose';

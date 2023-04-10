@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Put, Delete, Get } from '@nestjs/common';
+import { Controller, Post, Body, Get } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { BuyProductCommand, BuyProductData } from 'src/Domain/Commands/BuyProductCommand';
 import { GetAllBuysQuery } from './QueryHandler/Query/GetAllBuysQuery';
