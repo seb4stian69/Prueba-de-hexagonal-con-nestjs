@@ -1,5 +1,5 @@
 import { ClientCreatedEvent } from "src/Domain/Events/ClientCreatedEvent";
-import { UserD } from "../Repository/UserRepository";
+import { UserD } from "./Repository/UserRepository";
 
 export const convertToUserD = (event: ClientCreatedEvent):UserD => {
     

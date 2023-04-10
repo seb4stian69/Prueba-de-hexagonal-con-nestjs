@@ -1,7 +1,4 @@
-import { DeleteProductCommand } from 'src/Domain/Commands/DeleteProductCommand';
-import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { CreateShopCommand } from 'src/Domain/Commands/CreateShopCommand';
-import { ShopRepository } from '../Repository/ShopRepository';
 import { CreateShopUseCase } from 'src/Application/UseCase/CreateShopUseCase';
 import { BuyProductCommand } from 'src/Domain/Commands/BuyProductCommand';
 import { BuyProductUseCase } from 'src/Application/UseCase/BuyProductUseCase';
@@ -10,10 +7,11 @@ import { RegisterProductUseCase } from 'src/Application/UseCase/RegisterProductU
 import { EditProductCommand } from 'src/Domain/Commands/EditProductCommand';
 import { EditProductUseCase } from 'src/Application/UseCase/EditProductUseCase';
 import { DeleteProductUseCase } from 'src/Application/UseCase/DeleteProductUseCase';
-import { ProductRepository } from '../Repository/ProductRepository';
+import { ProductRepository } from '../../Common/Repository/ProductRepository';
 import { Shop } from 'src/Domain/Shop';
-import { CreateClientCommand } from 'src/Domain/Commands/CreateClientCommand';
-import { CreateClientUseCase } from 'src/Application/UseCase/CreateClientUseCase';
+import { DeleteProductCommand } from 'src/Domain/Commands/DeleteProductCommand';
+import { CommandHandler, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
+import { ShopRepository } from '../../Common/Repository/ShopRepository';
 
 const inCommand: string = '[En el comando]'
 
@@ -22,7 +20,6 @@ const inCommand: string = '[En el comando]'
 export class CreateShopHandler implements ICommandHandler<CreateShopCommand> {
 
   constructor(
-    private readonly repository: ShopRepository,
     private readonly publisher: EventPublisher,
     private readonly productRepository:ProductRepository
   ) {}
@@ -143,27 +140,4 @@ export class BuyProductHandler implements ICommandHandler<BuyProductCommand> {
 
   }
 
-} 
-
-/* + ------------------------------ | Create Client | ------------------------------ + */
-
-@CommandHandler(CreateClientCommand)
-export class CreateClientHandler implements ICommandHandler<CreateClientCommand> {
-
-  constructor(
-    private readonly publisher: EventPublisher,
-  ) {}
-
-  async execute(command: CreateClientCommand) {
-
-    console.log('\n+----------------------------------------------------+');
-    console.log(`\x1b[32m${inCommand}\x1b[0m` + ' Creando cliente ...');
-
-    let usecase = new CreateClientUseCase();
-    const shop = await usecase.apply(command);
-    this.publisher.mergeObjectContext(shop);
-    shop.commit();
-
-  }
-
-} 
+}

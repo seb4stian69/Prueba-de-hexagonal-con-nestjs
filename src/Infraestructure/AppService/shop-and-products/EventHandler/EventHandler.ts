@@ -5,13 +5,10 @@ import { ProductEditedEvent } from 'src/Domain/Events/ProductEditedEvent';
 import { ProductRegisteredEvent } from 'src/Domain/Events/ProductRegisteredEvent';
 import { ProductPurchasedEvent } from 'src/Domain/Events/ProductsPurchasedEvent';
 import { ShopCreatedEvent } from 'src/Domain/Events/ShopCreatedEvent';
-import { ShopRepository } from '../Repository/ShopRepository';
 import { ShopD } from 'src/Domain/Shop';
 import { converRegisteredDataToProductEvent, convertToEditProductDataEvent } from 'src/Application/Utils/ConvertToEntity';
-import { InvoiceRepository } from '../Repository/InvoiceRepository';
-import { ClientCreatedEvent } from 'src/Domain/Events/ClientCreatedEvent';
-import { UserRepository } from '../Repository/UserRepository';
-import { convertToUserD } from '../Utils/ConvertToUserD';
+import { ShopRepository } from '../../Common/Repository/ShopRepository';
+import { InvoiceRepository } from '../../Common/Repository/InvoiceRepository';
 
 const inEvent: string = 'En el evento'
 
@@ -119,19 +116,3 @@ export class ProductPurchasedHandler implements IEventHandler<ProductPurchasedEv
     
   }
 }
-
-/* + ------------------------------ | Clietn Created | ------------------------------ + */
-
-@EventsHandler(ClientCreatedEvent)
-export class ClientCreatedHandler implements IEventHandler<ClientCreatedEvent> {
-
-  constructor(
-    private readonly userRepository:UserRepository,
-  ){}
-
-  handle(event: ClientCreatedEvent) {
-    this.userRepository.saveUser(convertToUserD(event))
-    console.log('\n' + `\x1b[32m[${inEvent}]\x1b[0m`+' Cliente guardado ...');
-  }
-
-} 
